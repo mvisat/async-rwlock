@@ -111,19 +111,19 @@ async function testLock() {
 - `timeout?: number`. **Default**: `Infinity`.
 - Returns: `Promise<void>`.
 
-Acquire a read or write lock.
+Acquire a read/write lock.
 
 `timeout` is how long it will wait to acquire the lock before promise is rejected in milliseconds. If `timeout` is not in range `0 <= timeout < Infinity`, it will wait indefinitely.
 
 #### `unlock()`
 - Returns: `void`.
 
-Release the current lock. Must be called after operation using read/write lock is finished.
+Release current lock. Must be called after operation using read/write lock is finished.
 
 #### `getState()`
 - Returns: `State`.
 
-Returns current state of lock. The states are either `Idle`, `Reading`, or `Writing`.
+Get current state of lock. The states are either `Idle`, `Reading`, or `Writing`.
 
 ## License
 [MIT](LICENSE)
