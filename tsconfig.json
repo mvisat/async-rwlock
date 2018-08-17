@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "moduleResolution": "node",
+        "types": [
+            "node",
+            "jest"
+        ],
+        "target": "es6",
+        "sourceMap": true,
+        "outDir": "dist",
+        "declaration": true,
+        "strict": true
+    },
+    "exclude": [
+        ".vscode",
+        "node_modules"
+    ]
+}
