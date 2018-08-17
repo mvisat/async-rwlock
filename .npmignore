@@ -1,1 +1,6 @@
 src/
+coverage/
+jest.config.js
+tsconfig.json
+tslint.json
+yarn.lock
