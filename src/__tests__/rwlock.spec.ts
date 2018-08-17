@@ -180,6 +180,7 @@ describe('timeout tests', () => {
     test('read lock timeout', async (done) => {
         await lock.writeLock();
         await expect(lock.readLock(1)).rejects.toThrowError(ErrTimeout);
+        lock.unlock();
         done();
     });
 
@@ -188,6 +189,7 @@ describe('timeout tests', () => {
         await lock.writeLock();
         lock.readLock(100).then(() => {
             expect(released).toBe(true);
+            lock.unlock();
             done();
         });
         setTimeout(() => {
@@ -199,6 +201,7 @@ describe('timeout tests', () => {
     test('write lock timeout', async (done) => {
         await lock.readLock();
         await expect(lock.writeLock(1)).rejects.toThrowError(ErrTimeout);
+        lock.unlock();
         done();
     });
 
@@ -207,6 +210,7 @@ describe('timeout tests', () => {
         await lock.readLock();
         lock.writeLock(100).then(() => {
             expect(released).toBe(true);
+            lock.unlock();
             done();
         });
         setTimeout(() => {
