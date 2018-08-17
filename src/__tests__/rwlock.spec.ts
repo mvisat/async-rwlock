@@ -21,7 +21,9 @@ describe('read lock tests', () => {
 
     test('single reader', async (done) => {
         await lock.readLock();
+        expect(lock.getState()).toBe(State.Reading);
         lock.unlock();
+        expect(lock.getState()).toBe(State.Idle);
         done();
     });
 
@@ -50,7 +52,9 @@ describe('write lock tests', () => {
 
     test('single writer', async (done) => {
         await lock.writeLock();
+        expect(lock.getState()).toBe(State.Writing);
         lock.unlock();
+        expect(lock.getState()).toBe(State.Idle);
         done();
     });
 
@@ -58,7 +62,6 @@ describe('write lock tests', () => {
         lock.writeLock().then(() => {
             let released = false;
             lock.writeLock().then(() => {
-                expect(lock.getState()).toBe(State.Writing);
                 expect(released).toBe(true);
                 lock.unlock();
                 done();
@@ -139,10 +142,10 @@ describe('read-write lock tests', () => {
                     if (released) {
                         lock.unlock();
                         callback();
-                        return;
+                    } else {
+                        released = true;
+                        setTimeout(() => { lock.unlock(); }, 0);
                     }
-                    released = true;
-                    setTimeout(() => { lock.unlock(); }, 0);
                 });
                 setTimeout(() => { lock.unlock(); }, 0);
             });
@@ -152,10 +155,10 @@ describe('read-write lock tests', () => {
                     if (released) {
                         lock.unlock();
                         callback();
-                        return;
+                    } else {
+                        released = true;
+                        setTimeout(() => { lock.unlock(); }, 0);
                     }
-                    released = true;
-                    setTimeout(() => { lock.unlock(); }, 0);
                 });
                 setTimeout(() => { lock.unlock(); }, 0);
             });
