@@ -84,14 +84,16 @@ export class RWLock {
             if (rejected) {
                 return;
             }
-            timer && clearTimeout(timer);
+            if (timer) {
+                clearTimeout(timer);
+            }
             resolve();
         };
 
         const doReject = () => {
             rejected = true;
             reject(ErrTimeout);
-        }
+        };
 
         if (timeout && timeout >= 0 && timeout < Infinity) {
             timer = setTimeout(doReject, timeout);
