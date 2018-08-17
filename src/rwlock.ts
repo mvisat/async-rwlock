@@ -78,14 +78,26 @@ export class RWLock {
 
     private pend(queue: any[], resolve: () => void, reject: (reason?: any) => void, timeout: number): void {
         let timer: any = null;
-        if (timeout && timeout > 0 && timeout < Infinity) {
-            timer = setTimeout(reject, timeout, ErrTimeout);
-        }
+        let rejected = false;
 
-        queue.push(() => {
+        const doResolve = () => {
+            if (rejected) {
+                return;
+            }
             timer && clearTimeout(timer);
             resolve();
-        });
+        };
+
+        const doReject = () => {
+            rejected = true;
+            reject(ErrTimeout);
+        }
+
+        if (timeout && timeout >= 0 && timeout < Infinity) {
+            timer = setTimeout(doReject, timeout);
+        }
+
+        queue.push(doResolve);
     }
 
     private allowWrite(): void {
