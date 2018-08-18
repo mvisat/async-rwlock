@@ -1,7 +1,7 @@
 {
     "name": "async-rwlock",
     "version": "0.0.1",
-    "description": "Asynchronous reader-writer lock",
+    "description": "Promise-based asynchronous readers-writers lock",
     "main": "dist/index.js",
     "scripts": {
         "build": "rimraf dist && tsc",
@@ -15,10 +15,10 @@
     },
     "keywords": [
         "async",
-        "reader",
-        "writer",
-        "reader-writer",
-        "lock"
+        "concurrency",
+        "lock",
+        "rwlock",
+        "promise"
     ],
     "author": "Muhamad Visat Sutarno",
     "license": "MIT",

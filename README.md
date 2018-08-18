@@ -1,5 +1,5 @@
 # async-rwlock
-ES6 Promise-based asynchronous readers-writers lock. Timeout is also supported.
+Promise-based asynchronous readers-writers lock. Timeout is also supported.
 
 ## Install
 ```
