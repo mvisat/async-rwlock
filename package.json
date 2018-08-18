@@ -1,6 +1,6 @@
 {
     "name": "async-rwlock",
-    "version": "0.0.1",
+    "version": "1.0.0",
     "description": "Promise-based asynchronous readers-writers lock",
     "main": "dist/index.js",
     "scripts": {
