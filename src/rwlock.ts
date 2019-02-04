@@ -13,6 +13,13 @@ export class RWLock {
     private numReaders = 0;
     private state = State.Idle;
 
+    constructor() {
+        this.getState = this.getState.bind(this);
+        this.readLock = this.readLock.bind(this);
+        this.writeLock = this.writeLock.bind(this);
+        this.unlock = this.unlock.bind(this);
+    }
+
     public getState(): State {
         return this.state;
     }
