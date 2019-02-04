@@ -9,7 +9,9 @@
     "build": "tsc",
     "lint": "tslint --project tsconfig.json",
     "pretty": "yarn lint && prettier --write 'src/**/*.ts'",
-    "test": "nyc mocha"
+    "test": "nyc mocha",
+    "preversion": "yarn lint && yarn test",
+    "postversion": "git push --tags && yarn publish . --tag $npm_package_version && git push"
   },
   "repository": {
     "type": "git",
