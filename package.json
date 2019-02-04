@@ -1,42 +1,43 @@
 {
-    "name": "async-rwlock",
-    "version": "1.0.0",
-    "description": "Promise-based asynchronous readers-writers lock",
-    "main": "dist/index.js",
-    "scripts": {
-        "build": "rimraf dist && tsc",
-        "lint": "tslint --project ./tsconfig.json",
-        "prepublishOnly": "yarn build",
-        "test": "jest"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/mvisat/async-rwlock.git"
-    },
-    "keywords": [
-        "async",
-        "concurrency",
-        "lock",
-        "rwlock",
-        "promise"
-    ],
-    "author": "Muhamad Visat Sutarno",
-    "license": "MIT",
-    "bugs": {
-        "url": "https://github.com/mvisat/async-rwlock/issues"
-    },
-    "homepage": "https://github.com/mvisat/async-rwlock#readme",
-    "devDependencies": {
-        "@types/jest": "^23.3.1",
-        "@types/node": "^10.7.1",
-        "jest": "^23.5.0",
-        "rimraf": "^2.6.2",
-        "ts-jest": "^23.1.3",
-        "tslint": "^5.11.0",
-        "tslint-eslint-rules": "^5.4.0",
-        "typescript": "^3.0.1"
-    },
-    "engines": {
-        "node": ">=8.0.0"
-    }
+  "name": "async-rwlock",
+  "version": "1.0.0",
+  "description": "Promise-based asynchronous readers-writers lock",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "build": "tsc",
+    "lint": "tslint --project ./tsconfig.json",
+    "pretty": "yarn lint && prettier --write 'src/**/*.ts'",
+    "test": "jest"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mvisat/async-rwlock.git"
+  },
+  "keywords": [
+    "async",
+    "concurrency",
+    "lock",
+    "rwlock",
+    "promise"
+  ],
+  "author": "Muhamad Visat Sutarno",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/mvisat/async-rwlock/issues"
+  },
+  "homepage": "https://github.com/mvisat/async-rwlock#readme",
+  "engines": {
+    "node": ">=8.0.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^23.3.1",
+    "@types/node": "^10.7.1",
+    "jest": "^23.5.0",
+    "prettier": "^1.16.4",
+    "ts-jest": "^23.1.3",
+    "tslint": "^5.12.1",
+    "tslint-config-prettier": "^1.18.0",
+    "typescript": "^3.0.1"
+  }
 }

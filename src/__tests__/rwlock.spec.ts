@@ -1,11 +1,6 @@
-import {
-    ErrNotLocked,
-    ErrTimeout,
-    RWLock,
-    State,
-} from '../rwlock';
+import { ErrNotLocked, ErrTimeout, RWLock, State } from '../rwlock';
 
-it('throws error when unlocking an unlocked RWLock', (done) => {
+it('throws error when unlocking an unlocked RWLock', done => {
     const lock = new RWLock();
     expect(() => lock.unlock()).toThrowError(ErrNotLocked);
     done();
@@ -19,7 +14,7 @@ describe('read lock tests', () => {
         done();
     });
 
-    test('single reader', async (done) => {
+    test('single reader', async done => {
         await lock.readLock();
         expect(lock.getState()).toBe(State.Reading);
         lock.unlock();
@@ -27,7 +22,7 @@ describe('read lock tests', () => {
         done();
     });
 
-    test('multiple readers', (done) => {
+    test('multiple readers', done => {
         let count = 0;
         lock.readLock().then(() => {
             count++;
@@ -50,7 +45,7 @@ describe('write lock tests', () => {
         done();
     });
 
-    test('single writer', async (done) => {
+    test('single writer', async done => {
         await lock.writeLock();
         expect(lock.getState()).toBe(State.Writing);
         lock.unlock();
@@ -58,7 +53,7 @@ describe('write lock tests', () => {
         done();
     });
 
-    test('multiple writers', (done) => {
+    test('multiple writers', done => {
         lock.writeLock().then(() => {
             let released = false;
             lock.writeLock().then(() => {
@@ -77,12 +72,12 @@ describe('write lock tests', () => {
 describe('read-write lock tests', () => {
     let lock: RWLock;
 
-    beforeEach((done) => {
+    beforeEach(done => {
         lock = new RWLock();
         done();
     });
 
-    test('single reader, single writer', (done) => {
+    test('single reader, single writer', done => {
         lock.readLock().then(() => {
             let released = false;
             lock.writeLock().then(() => {
@@ -97,7 +92,7 @@ describe('read-write lock tests', () => {
         });
     });
 
-    test('single writer, single reader', (done) => {
+    test('single writer, single reader', done => {
         lock.writeLock().then(() => {
             let released = false;
             lock.readLock().then(() => {
@@ -112,7 +107,7 @@ describe('read-write lock tests', () => {
         });
     });
 
-    test('multiple readers, single writer', (done) => {
+    test('multiple readers, single writer', done => {
         lock.readLock().then(() => {
             let released = 0;
             lock.readLock().then(() => {
@@ -133,8 +128,8 @@ describe('read-write lock tests', () => {
         });
     });
 
-    test('multiple readers, multiple writers', (done) => {
-        function wrap(callback: (() => void)) {
+    test('multiple readers, multiple writers', done => {
+        function wrap(callback: () => void) {
             let released = false;
 
             lock.readLock().then(() => {
@@ -144,10 +139,14 @@ describe('read-write lock tests', () => {
                         callback();
                     } else {
                         released = true;
-                        setTimeout(() => { lock.unlock(); }, 0);
+                        setTimeout(() => {
+                            lock.unlock();
+                        }, 0);
                     }
                 });
-                setTimeout(() => { lock.unlock(); }, 0);
+                setTimeout(() => {
+                    lock.unlock();
+                }, 0);
             });
 
             lock.writeLock().then(() => {
@@ -157,10 +156,14 @@ describe('read-write lock tests', () => {
                         callback();
                     } else {
                         released = true;
-                        setTimeout(() => { lock.unlock(); }, 0);
+                        setTimeout(() => {
+                            lock.unlock();
+                        }, 0);
                     }
                 });
-                setTimeout(() => { lock.unlock(); }, 0);
+                setTimeout(() => {
+                    lock.unlock();
+                }, 0);
             });
         }
 
@@ -175,19 +178,19 @@ describe('read-write lock tests', () => {
 describe('timeout tests', () => {
     let lock: RWLock;
 
-    beforeEach((done) => {
+    beforeEach(done => {
         lock = new RWLock();
         done();
     });
 
-    test('read lock timeout', async (done) => {
+    test('read lock timeout', async done => {
         await lock.writeLock();
         await expect(lock.readLock(1)).rejects.toThrowError(ErrTimeout);
         lock.unlock();
         done();
     });
 
-    test('read lock acquired before timeout', async (done) => {
+    test('read lock acquired before timeout', async done => {
         let released = false;
         await lock.writeLock();
         lock.readLock(100).then(() => {
@@ -201,14 +204,14 @@ describe('timeout tests', () => {
         }, 0);
     });
 
-    test('write lock timeout', async (done) => {
+    test('write lock timeout', async done => {
         await lock.readLock();
         await expect(lock.writeLock(1)).rejects.toThrowError(ErrTimeout);
         lock.unlock();
         done();
     });
 
-    test('write lock acquired before timeout', async (done) => {
+    test('write lock acquired before timeout', async done => {
         let released = false;
         await lock.readLock();
         lock.writeLock(100).then(() => {
