@@ -1,19 +1,23 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "moduleResolution": "node",
-        "types": [
-            "node",
-            "jest"
-        ],
-        "target": "es6",
-        "sourceMap": true,
-        "outDir": "dist",
-        "declaration": true,
-        "strict": true
-    },
-    "exclude": [
-        ".vscode",
-        "node_modules"
-    ]
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "types": [
+      "node",
+      "mocha",
+      "chai",
+      "chai-as-promised"
+    ],
+    "rootDir": "src",
+    "outDir": "dist",
+    "declaration": true,
+    "sourceMap": true,
+    "stripInternal": true,
+    "strict": true,
+    "noImplicitReturns": true
+  },
+  "include": [
+    "src"
+  ]
 }
