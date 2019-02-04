@@ -13,6 +13,13 @@ export class RWLock {
     private numReaders = 0;
     private state = State.Idle;
 
+    constructor() {
+        this.getState = this.getState.bind(this);
+        this.readLock = this.readLock.bind(this);
+        this.writeLock = this.writeLock.bind(this);
+        this.unlock = this.unlock.bind(this);
+    }
+
     public getState(): State {
         return this.state;
     }
@@ -42,41 +49,46 @@ export class RWLock {
 
     public unlock(): void {
         switch (this.state) {
-        case State.Reading:
-            this.numReaders--;
-            if (this.numReaders) {
+            case State.Reading:
+                this.numReaders--;
+                if (this.numReaders) {
+                    return;
+                }
+
+                if (this.pendingWriters.length) {
+                    this.allowWrite();
+                } else {
+                    this.state = State.Idle;
+                }
                 return;
-            }
 
-            if (this.pendingWriters.length) {
-                this.allowWrite();
-            } else {
-                this.state = State.Idle;
-            }
-            return;
+            case State.Writing:
+                const nReaders = this.pendingReaders.length;
+                const nWriters = this.pendingWriters.length;
 
-        case State.Writing:
-            const nReaders = this.pendingReaders.length;
-            const nWriters = this.pendingWriters.length;
+                if (nReaders && nWriters) {
+                    // prevent starving by randomly selecting reader/writer
+                    Math.random() >= 0.5 ? this.allowRead() : this.allowWrite();
+                } else if (nReaders) {
+                    this.allowRead();
+                } else if (nWriters) {
+                    this.allowWrite();
+                } else {
+                    this.state = State.Idle;
+                }
+                return;
 
-            if (nReaders && nWriters) {
-                // prevent starving by randomly selecting reader/writer
-                Math.random() >= 0.5 ? this.allowRead() : this.allowWrite();
-            } else if (nReaders) {
-                this.allowRead();
-            } else if (nWriters) {
-                this.allowWrite();
-            } else {
-                this.state = State.Idle;
-            }
-            return;
-
-        default:
-            throw ErrNotLocked;
+            default:
+                throw ErrNotLocked;
         }
     }
 
-    private pend(queue: any[], resolve: () => void, reject: (reason?: any) => void, timeout: number): void {
+    private pend(
+        queue: any[],
+        resolve: () => void,
+        reject: (reason?: any) => void,
+        timeout: number,
+    ): void {
         let timer: any = null;
         let rejected = false;
 
