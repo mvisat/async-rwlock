@@ -1,10 +1,12 @@
 {
   "name": "async-rwlock",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Promise-based asynchronous readers-writers lock",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
-  "files": ["dist/**/*"],
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
     "build": "tsc",
     "lint": "tslint --project tsconfig.json",
